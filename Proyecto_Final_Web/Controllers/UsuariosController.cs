@@ -330,6 +330,41 @@ namespace Proyecto_Final_Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [AllowAnonymous]
+        public IActionResult Registrarse()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registrarse([Bind("NombreCompleto,Correo,Contrasena,Telefono")] Usuario usuario)
+        {
+            ModelState.Remove("IdRolNavigation");
+            if (ModelState.IsValid)
+            {
+                usuario.IdRol = 4;
+
+                using (SHA256 sha256Hash = SHA256.Create())
+                {
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(usuario.Contrasena));
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    usuario.Contrasena = builder.ToString();
+                }
+
+                usuario.FechaRegistro = DateTime.Now;
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Acceso");
+            }
+            return View(usuario);
+        }
+
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.IdUsuario == id);
