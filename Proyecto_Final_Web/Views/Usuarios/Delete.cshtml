@@ -1,0 +1,112 @@
+﻿@model Proyecto_Final_Web.Models.Usuario
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="delete-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="icon-container">
+                            <div class="main-icon">
+                                <i class="fas fa-user-times"></i> <!-- Icono para eliminar usuario -->
+                            </div>
+                        </div>
+                        <h1><i class="fas fa-exclamation-triangle me-3"></i>Eliminar Usuario</h1>
+                        <h4>Confirma la eliminación de este usuario permanentemente</h4>
+                    </div>
+
+                    <h3 class="confirmation-message">
+                        <i class="fas fa-question-circle"></i> ¿Estás seguro de que quieres eliminar esto?
+                    </h3>
+
+                    <div class="details-content">
+                        <h4>Detalles del Usuario</h4>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="NombreCompleto">
+                                        @Html.DisplayNameFor(model => model.NombreCompleto)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.NombreCompleto)
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="Correo">
+                                        @Html.DisplayNameFor(model => model.Correo)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Correo)
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="Contrasena">
+                                        @Html.DisplayNameFor(model => model.Contrasena)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Contrasena)
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="Telefono">
+                                        @Html.DisplayNameFor(model => model.Telefono)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Telefono)
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="FechaRegistro">
+                                        @Html.DisplayNameFor(model => model.FechaRegistro)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.FechaRegistro)
+                                    </dd>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details-group">
+                                    <dt data-label="IdRolNavigation">
+                                        @Html.DisplayNameFor(model => model.IdRolNavigation)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.IdRolNavigation.Nombre) <!-- Mostrar el nombre del rol -->
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdUsuario" />
+                        <div class="action-buttons">
+                            <input type="submit" value="Eliminar" class="btn-delete" />
+                            <a asp-action="Index" class="back-link">
+                                Volver a la Lista
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        // No hay scripts de validación específicos para esta página de confirmación de eliminación
+    }
+}

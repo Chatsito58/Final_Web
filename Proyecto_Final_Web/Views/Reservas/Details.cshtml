@@ -1,0 +1,408 @@
+﻿@model Proyecto_Final_Web.Models.Reserva
+@{
+    ViewData["Title"] = "Details";
+}
+
+<style>
+    .success-section {
+        background: linear-gradient(135deg, #2E8B57 0%, #4682B4 50%, #20B2AA 100%);
+        padding: 40px 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+
+        .success-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.2"><animate attributeName="opacity" values="0.2;0.4;0.2" dur="4s" repeatCount="indefinite"/></circle><circle cx="60" cy="80" r="2.5" fill="white" opacity="0.15"><animate attributeName="opacity" values="0.15;0.35;0.15" dur="5s" repeatCount="indefinite"/></circle></svg>') repeat;
+            animation: float 20s ease-in-out infinite;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .details-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(46, 139, 87, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .details-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2E8B57, #4682B4, #20B2AA, #228B22);
+            background-size: 400% 400%;
+            animation: gradient 3s ease infinite;
+        }
+
+    @@keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .success-header {
+        background: linear-gradient(135deg, #2E8B57 0%, #4682B4 100%);
+        color: white;
+        padding: 30px;
+        margin: -30px -30px 30px -30px;
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+    }
+
+        .success-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .success-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+    .checkmark-container {
+        margin: 20px 0;
+        position: relative;
+    }
+
+    .checkmark {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .detail-card {
+        background: linear-gradient(135deg, rgba(46, 139, 87, 0.05) 0%, rgba(70, 130, 180, 0.05) 100%);
+        border: 2px solid rgba(46, 139, 87, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #2E8B57, #4682B4);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(46, 139, 87, 0.15);
+            border-color: rgba(46, 139, 87, 0.3);
+        }
+
+    .detail-label {
+        font-weight: 700;
+        color: #2c5f2d;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .detail-value {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 500;
+        word-wrap: break-word;
+    }
+
+        .detail-value.highlight {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2E8B57;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        color: white;
+        text-decoration: none;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #228B22 0%, #4682B4 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46, 139, 87, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-outline-primary {
+        border: 2px solid #4682B4;
+        color: #4682B4;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: transparent;
+    }
+
+        .btn-outline-primary:hover {
+            background: #4682B4;
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+    .status-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-confirmed {
+        background: linear-gradient(135deg, #2E8B57, #20B2AA);
+        color: white;
+    }
+
+    .status-pending {
+        background: linear-gradient(135deg, #FFA500, #FF8C00);
+        color: white;
+    }
+
+    .reservation-summary {
+        background: linear-gradient(135deg, rgba(46, 139, 87, 0.1) 0%, rgba(32, 178, 170, 0.1) 100%);
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        border: 2px solid rgba(46, 139, 87, 0.2);
+    }
+
+    .summary-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2E8B57;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    @@media (max-width: 768px) {
+        .details-container {
+            margin: 20px;
+            border-radius: 15px;
+        }
+
+        .success-header h1 {
+            font-size: 2rem;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-success, .btn-outline-primary {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+
+<div class="success-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="details-container p-4 p-md-5">
+                    <div class="success-header">
+                        <div class="checkmark-container">
+                            <div class="checkmark">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <h1><i class="fas fa-calendar-check me-3"></i>¡Reserva Confirmada!</h1>
+                        <p>Tu cancha deportiva ha sido reservada exitosamente</p>
+                    </div>
+
+                    <div class="reservation-summary">
+                        <div class="summary-title">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            Resumen de tu Reserva
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-play-circle text-success"></i>
+                                @Html.DisplayNameFor(model => model.FechaHoraInicio)
+                            </div>
+                            <div class="detail-value highlight">
+                                @Html.DisplayFor(model => model.FechaHoraInicio)
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-stop-circle" style="color: #4682B4;"></i>
+                                @Html.DisplayNameFor(model => model.FechaHoraFin)
+                            </div>
+                            <div class="detail-value highlight">
+                                @Html.DisplayFor(model => model.FechaHoraFin)
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-map-marker-alt text-success"></i>
+                                @Html.DisplayNameFor(model => model.IdCanchaNavigation)
+                            </div>
+                            <div class="detail-value">
+                                @Html.DisplayFor(model => model.IdCanchaNavigation.IdCancha)
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-user" style="color: #2E8B57;"></i>
+                                @Html.DisplayNameFor(model => model.IdClienteNavigation)
+                            </div>
+                            <div class="detail-value">
+                                @Html.DisplayFor(model => model.IdClienteNavigation.IdUsuario)
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-dollar-sign text-success"></i>
+                                @Html.DisplayNameFor(model => model.Valor)
+                            </div>
+                            <div class="detail-value highlight">
+                                $@Html.DisplayFor(model => model.Valor)
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-check-circle text-success"></i>
+                                @Html.DisplayNameFor(model => model.IdEstadoReservaNavigation)
+                            </div>
+                            <div class="detail-value">
+                                <span class="status-badge status-confirmed">
+                                    @Html.DisplayFor(model => model.IdEstadoReservaNavigation.IdEstadoReserva)
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-clock" style="color: #20B2AA;"></i>
+                                @Html.DisplayNameFor(model => model.FechaCreacion)
+                            </div>
+                            <div class="detail-value">
+                                @Html.DisplayFor(model => model.FechaCreacion)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a asp-action="Index" class="btn btn-success">
+                            <i class="fas fa-home me-2"></i>
+                            Volver al Inicio
+                        </a>
+
+                        <a asp-action="Edit" asp-route-id="@Model?.IdReserva" class="btn btn-outline-primary">
+                            <i class="fas fa-edit me-2"></i>
+                            Editar Reserva
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

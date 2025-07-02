@@ -1,0 +1,726 @@
+﻿@model Proyecto_Final_Web.Models.Reserva
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" xintegrity="sha512-1ycn6IcaQQ40NZMfzGtpNKPzLfw5+TYxLz7J6v9h+L5m4w/uLg0g9b4O1J0zK6P5tC2Lz/j0+R8dI6c0eQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Colores y gradientes de la guía de diseño original */
+    /* Colores Principales: */
+    /* Verde Marino - Color principal */
+    /* #2E8B57 (rgb(46, 139, 87)) */
+    /* Azul Acero - Color secundario */
+    /* #4682B4 (rgb(70, 130, 180)) */
+    /* Verde Agua - Color de acento */
+    /* #20B2AA (rgb(32, 178, 170)) */
+    /* Verde Bosque - Para hovers y estados activos */
+    /* #228B22 (rgb(34, 139, 34)) */
+
+    /* Gradiente Principal (135°): */
+    /* background: linear-gradient(135deg, #2E8B57 0%, #4682B4 50%, #20B2AA 100%); */
+
+    /* Gradiente de Header (135°): */
+    /* background: linear-gradient(135deg, #2E8B57 0%, #4682B4 100%); */
+
+    /* Gradiente Animado Superior (90°): */
+    /* background: linear-gradient(90deg, #2E8B57, #4682B4, #20B2AA, #228B22); */
+
+    /* Animación de Gradiente (Barra Superior): */
+    /* @@keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        } */
+
+    /* Animación Flotante (Partículas de Fondo): */
+    /* @@keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        } */
+
+    /* Animación Bounce (Iconos principales - del crear reservas) */
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-10px);
+        }
+
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+
+
+    body {
+        background: linear-gradient(135deg, #2E8B57 0%, #4682B4 50%, #20B2AA 100%);
+        min-height: 100vh;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #2c5f2d; /* Verde oscuro para textos principales */
+        margin: 0;
+        padding: 20px 0;
+    }
+
+    .edit-section {
+        background: transparent;
+        padding: 0;
+        position: relative;
+        overflow: visible;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px; /* De la guía */
+        box-shadow: 0 20px 40px rgba(46, 139, 87, 0.15); /* De la guía */
+        backdrop-filter: blur(10px); /* De la guía */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* De la guía */
+        position: relative;
+        overflow: hidden;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px; /* De la guía */
+            background: linear-gradient(90deg, #2E8B57, #4682B4, #20B2AA, #228B22); /* Gradiente animado superior */
+            background-size: 400% 400%;
+            animation: gradient 3s ease infinite;
+        }
+
+    @@keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #2E8B57 0%, #4682B4 100%); /* Gradiente de header */
+        color: white;
+        padding: 30px; /* De la guía de crear reservas */
+        margin: -30px -30px 30px -30px; /* Margen para sobresalir */
+        border-radius: 20px 20px 0 0; /* De la guía de crear reservas */
+        text-align: center;
+        position: relative;
+        overflow: hidden; /* Para contener las partículas si se añaden */
+    }
+
+        .form-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative; /* Para z-index sobre partículas */
+            z-index: 1;
+        }
+
+        .form-header h4 { /* Originalmente p en crear reservas */
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative; /* Para z-index sobre partículas */
+            z-index: 1;
+        }
+
+    .edit-icon-container {
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .edit-icon {
+        width: 50px; /* Tamaño del icono adaptado a los iconos de crear reservas */
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem; /* Tamaño del icono adaptado */
+        animation: bounce 2s infinite; /* Animación de bounce */
+        border: none; /* Sin borde extra */
+    }
+
+    .form-summary {
+        background: linear-gradient(135deg, rgba(46, 139, 87, 0.05) 0%, rgba(70, 130, 180, 0.05) 100%); /* Card element glassmorphism */
+        backdrop-filter: blur(5px); /* Card element glassmorphism */
+        border-radius: 16px; /* Ajustado para ser coherente con el estilo general */
+        padding: 25px;
+        margin: 30px;
+        border: 2px solid rgba(46, 139, 87, 0.1); /* Card element glassmorphism */
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    }
+
+        .form-summary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #2E8B57; /* Color principal */
+        }
+
+    .summary-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c5f2d; /* Verde oscuro para textos principales */
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .summary-text {
+        color: #666; /* Gris medio para textos secundarios */
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .form-content {
+        padding: 30px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        background: rgba(255, 255, 255, 0.9); /* Fondo similar al form-control para consistencia */
+        border: 2px solid #e1f5e1; /* Borde suave */
+        border-radius: 12px; /* De form-control */
+        padding: 25px;
+        transition: all 0.3s ease; /* Transición más simple */
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    }
+
+        .form-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #2E8B57, #4682B4); /* Borde izquierdo decorativo */
+            opacity: 0; /* Por defecto oculto */
+            transition: opacity 0.3s ease;
+        }
+
+        .form-group:hover::before {
+            opacity: 1;
+        }
+
+        .form-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(46, 139, 87, 0.15); /* Elevación estándar */
+            border-color: rgba(46, 139, 87, 0.3);
+        }
+
+        .form-group:focus-within {
+            transform: translateY(-3px); /* Elevación para formularios */
+            box-shadow: 0 10px 25px rgba(46, 139, 87, 0.2);
+            border-color: rgba(46, 139, 87, 0.5);
+        }
+
+            .form-group:focus-within::before {
+                opacity: 1;
+            }
+
+    .control-label {
+        font-weight: 600;
+        color: #2c5f2d; /* Verde oscuro para textos principales */
+        font-size: 1rem; /* Tamaño de fuente de crear reservas */
+        margin-bottom: 8px; /* Margen de crear reservas */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .control-label::before {
+            content: '';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: #2E8B57; /* Color principal */
+            font-size: 1.1rem; /* Un poco más grande para visibilidad */
+            margin-right: 0; /* Resetear margin-right por si acaso */
+        }
+
+        /* Iconos específicos basados en la guía de diseño */
+        .control-label[for*="IdCliente"]::before {
+            content: '\f007';
+        }
+        /* fa-user */
+        .control-label[for*="IdCancha"]::before {
+            content: '\f041';
+        }
+        /* fa-map-marker-alt */
+        .control-label[for*="FechaHoraInicio"]::before {
+            content: '\f017';
+        }
+        /* fa-clock */
+        .control-label[for*="FechaHoraFin"]::before {
+            content: '\f017';
+        }
+        /* fa-clock */
+        .control-label[for*="IdEstadoReserva"]::before {
+            content: '\f058';
+        }
+        /* fa-check-circle */
+        .control-label[for*="FechaCreacion"]::before {
+            content: '\f073';
+        }
+        /* fa-calendar-alt */
+        .control-label[for*="Valor"]::before {
+            content: '\f155';
+        }
+    /* fa-dollar-sign */
+
+
+    .form-control, .form-select {
+        border: 2px solid #e1f5e1; /* Color del borde original */
+        border-radius: 12px;
+        padding: 12px 16px; /* Padding original */
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+        color: #333; /* Gris oscuro para valores */
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #2E8B57; /* Color principal */
+            box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25); /* Sombra de focus */
+            background: white;
+            transform: translateY(-2px); /* Pequeña elevación */
+            outline: none;
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: rgba(46, 139, 87, 0.5); /* Borde más pronunciado en hover */
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .form-control[readonly] {
+            background: rgba(248, 250, 252, 0.8); /* Fondo claro para readonly */
+            color: #666; /* Texto secundario */
+            cursor: not-allowed;
+        }
+
+    .text-danger {
+        color: #dc3545; /* Rojo para errores y validaciones */
+        font-size: 0.875rem;
+        margin-top: 5px; /* Margen de crear reservas */
+        font-weight: 500;
+        display: block;
+    }
+
+        .text-danger::before {
+            content: '\f071'; /* fa-exclamation-triangle */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+    .validation-summary {
+        background: rgba(220, 53, 69, 0.1); /* Fondo transparente rojo */
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(220, 53, 69, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 0 30px 25px 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .validation-summary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #dc3545; /* Rojo sólido para la barra */
+        }
+
+        .validation-summary strong {
+            color: #dc3545;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .validation-summary ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .validation-summary li {
+            color: #dc3545;
+            font-weight: 500;
+            margin: 5px 0;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        padding: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.95); /* Consistencia con form-container */
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%); /* Gradiente para botones normal */
+        border: none;
+        border-radius: 12px; /* De crear reservas */
+        padding: 15px 40px; /* De crear reservas */
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px; /* De crear reservas */
+        transition: all 0.3s ease; /* Transición más simple */
+        position: relative;
+        overflow: hidden;
+        color: white;
+        cursor: pointer;
+        min-width: 200px;
+    }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); /* Efecto de brillo de crear reservas */
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #228B22 0%, #4682B4 100%); /* Gradiente de hover para botones */
+            transform: translateY(-3px); /* Elevación para botones */
+            box-shadow: 0 10px 25px rgba(46, 139, 87, 0.4); /* Sombra de hover para botones */
+            color: white;
+        }
+
+        .btn-primary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25); /* Sombra de focus */
+            outline: none;
+        }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #4682B4; /* Azul acero */
+        text-decoration: none;
+        font-weight: 600;
+        padding: 12px 30px; /* De btn-outline-secondary de crear reservas */
+        border: 2px solid #4682B4; /* Borde de btn-outline-secondary */
+        border-radius: 12px; /* De btn-outline-secondary */
+        transition: all 0.3s ease; /* Transición más simple */
+        background: transparent;
+        min-width: 200px;
+        text-transform: none; /* Eliminar uppercase si se heredó */
+        letter-spacing: normal; /* Eliminar letter-spacing si se heredó */
+        font-size: 1.1rem;
+    }
+
+        .back-link:hover {
+            background: #4682B4; /* Azul acero en hover */
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(70, 130, 180, 0.3); /* Sombra suave */
+        }
+
+        .back-link::before {
+            content: '\f060'; /* fa-arrow-left */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+            margin-right: 5px; /* Pequeño margen para separar del texto */
+        }
+
+        .back-link:hover::before {
+            transform: translateX(-3px);
+        }
+
+    /* Responsive Design (Adaptado de la guía y crear reservas) */
+    @@media (max-width: 768px) {
+        body {
+            padding: 10px 0;
+        }
+
+        .form-container {
+            margin: 20px; /* Margen de crear reservas */
+            border-radius: 15px; /* Radio de crear reservas */
+            padding: 20px !important; /* Ajuste para móviles */
+        }
+
+        .form-header {
+            padding: 30px 20px;
+            margin: -20px -20px 20px -20px; /* Ajuste de márgenes para móviles */
+            border-radius: 15px 15px 0 0; /* Ajuste de radio para móviles */
+        }
+
+            .form-header h1 {
+                font-size: 2rem;
+            }
+
+        .form-content {
+            padding: 20px;
+        }
+
+        .form-summary {
+            margin: 20px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .btn-primary, .back-link {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .validation-summary {
+            margin: 0 20px 20px 20px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            padding: 20px;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .edit-icon {
+            width: 40px; /* Icono más pequeño en móviles pequeños */
+            height: 40px;
+            font-size: 1.2rem;
+        }
+    }
+
+    /* Animaciones de carga (mantenidas de tu CSS, adaptadas ligeramente) */
+    .form-container {
+        animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @@keyframes slideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-group {
+        animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+        .form-group:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .form-group:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .form-group:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .form-group:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .form-group:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+    @@keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="edit-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="edit-icon-container">
+                            <div class="edit-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                        </div>
+                        <h1><i class="fas fa-calendar-alt me-3"></i>Editar Reserva</h1>
+                        <h4>Modifica los detalles de tu reserva deportiva con estilo</h4>
+                    </div>
+
+                    <div class="form-summary">
+                        <div class="summary-title">
+                            <i class="fas fa-info-circle"></i>
+                            Actualización de Reserva
+                        </div>
+                        <div class="summary-text">
+                            Revisa y actualiza la información de tu reserva. Todos los campos marcados son obligatorios para completar el proceso.
+                        </div>
+                    </div>
+
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="validation-summary text-danger">
+                            <strong><i class="fas fa-exclamation-triangle"></i>Por favor corrige los siguientes errores:</strong>
+                        </div>
+
+                        <input type="hidden" asp-for="IdReserva" />
+
+                        <div class="form-content">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label asp-for="IdCliente" class="control-label">Cliente</label>
+                                    <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente">
+                                        <option value="">-- Selecciona un cliente --</option>
+                                    </select>
+                                    <span asp-validation-for="IdCliente" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="IdCancha" class="control-label">Cancha Deportiva</label>
+                                    <select asp-for="IdCancha" class="form-control" asp-items="ViewBag.IdCancha">
+                                        <option value="">-- Selecciona una cancha --</option>
+                                    </select>
+                                    <span asp-validation-for="IdCancha" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="FechaHoraInicio" class="control-label">Fecha y Hora de Inicio</label>
+                                    <input asp-for="FechaHoraInicio" class="form-control" type="datetime-local" />
+                                    <span asp-validation-for="FechaHoraInicio" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="FechaHoraFin" class="control-label">Fecha y Hora de Fin</label>
+                                    <input asp-for="FechaHoraFin" class="form-control" type="datetime-local" />
+                                    <span asp-validation-for="FechaHoraFin" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="IdEstadoReserva" class="control-label">Estado de la Reserva</label>
+                                    <select asp-for="IdEstadoReserva" class="form-control" asp-items="ViewBag.IdEstadoReserva">
+                                        <option value="">-- Selecciona un estado --</option>
+                                    </select>
+                                    <span asp-validation-for="IdEstadoReserva" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="FechaCreacion" class="control-label">Fecha de Creación</label>
+                                    <input asp-for="FechaCreacion" class="form-control" readonly />
+                                    <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Valor" class="control-label">Valor de la Reserva</label>
+                                    <input asp-for="Valor" class="form-control" type="number" step="0.01" min="0" placeholder="0.00" />
+                                    <span asp-validation-for="Valor" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                            <a asp-action="Index" class="back-link">
+                                Volver a la Lista
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

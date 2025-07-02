@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Proyecto_Final_Web.Models.Cancha>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="form-container p-4 p-md-5">
+                    <div class="form-header">
+                        <h1><i class="fas fa-futbol me-3"></i>Lista de Canchas</h1>
+                        <p>Administra las canchas deportivas disponibles</p>
+                    </div>
+
+                    <div class="d-flex justify-content-end mb-4">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Crear Nueva Cancha
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="th-icon-nombre">
+                                        @Html.DisplayNameFor(model => model.Nombre)
+                                    </th>
+                                    <th class="th-icon-tipo-cancha">
+                                        @Html.DisplayNameFor(model => model.TipoCancha)
+                                    </th>
+                                    <th class="th-icon-ubicacion">
+                                        @Html.DisplayNameFor(model => model.Ubicacion)
+                                    </th>
+                                    <th class="th-icon-descripcion">
+                                        @Html.DisplayNameFor(model => model.Descripcion)
+                                    </th>
+                                    <th class="th-icon-activa">
+                                        @Html.DisplayNameFor(model => model.Activa)
+                                    </th>
+                                    <th class="th-icon-fecha-creacion">
+                                        @Html.DisplayNameFor(model => model.FechaCreacion)
+                                    </th>
+                                    <th class="th-icon-fecha-actualizacion">
+                                        @Html.DisplayNameFor(model => model.FechaActualizacion)
+                                    </th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td data-label="@Html.DisplayNameFor(model => model.Nombre)">
+                                            @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.TipoCancha)">
+                                            @Html.DisplayFor(modelItem => item.TipoCancha)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.Ubicacion)">
+                                            @Html.DisplayFor(modelItem => item.Ubicacion)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.Descripcion)">
+                                            @Html.DisplayFor(modelItem => item.Descripcion)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.Activa)">
+                                            @Html.DisplayFor(modelItem => item.Activa)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.FechaCreacion)">
+                                            @Html.DisplayFor(modelItem => item.FechaCreacion)
+                                        </td>
+                                        <td data-label="@Html.DisplayNameFor(model => model.FechaActualizacion)">
+                                            @Html.DisplayFor(modelItem => item.FechaActualizacion)
+                                        </td>
+                                        <td data-label="Acciones">
+                                            <div class="d-flex justify-content-center justify-content-md-start">
+                                                <a asp-action="Edit" asp-route-id="@item.IdCancha" class="btn-action-edit">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.IdCancha" class="btn-action-details">
+                                                    <i class="fas fa-info-circle"></i> Detalles
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.IdCancha" class="btn-action-delete">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

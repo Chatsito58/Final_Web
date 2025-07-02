@@ -1,0 +1,401 @@
+﻿@model Proyecto_Final_Web.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Acceso";
+    Layout = null; /* Aseguramos que no se use el layout principal */
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sistema de Canchas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" xintegrity="sha512-1ycn6IcaQQ40NZMfzGtpNKPzLfw5+TYxLz7J6v9h+L5m4w/uLg0g9b4O1J0zK6P5tC2Lz/j0+R8dI6c0eQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        /* Colores y gradientes de la guía de diseño original */
+        /* Verde Marino - Color principal: #2E8B57 */
+        /* Azul Acero - Color secundario: #4682B4 */
+        /* Verde Agua - Color de acento: #20B2AA */
+        /* Verde Bosque - Para hovers y estados activos: #228B22 */
+
+        /* Colores de Soporte: */
+        /* Textos principales: #2c5f2d - Verde oscuro */
+        /* Gris oscuro para valores: #333 */
+        /* Gris medio para textos secundarios: #666 */
+        /* Rojo para errores y validaciones: #dc3545 */
+
+        /* Animación de Gradiente (Barra Superior Animada) */
+        @@keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Animación Bounce (Iconos principales) */
+        @@keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #2c5f2d; /* Verde oscuro para textos principales */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5; /* Fondo blanco/gris muy claro */
+            padding: 20px; /* Padding general para evitar que el contenido toque los bordes */
+        }
+
+        .login-container { /* Contenedor principal para la tarjeta de login */
+            background: rgba(255, 255, 255, 0.98); /* Más opaco para un fondo blanco */
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(46, 139, 87, 0.1); /* Sombra más sutil */
+            backdrop-filter: blur(8px); /* Ligero desenfoque */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Borde sutil */
+            position: relative;
+            overflow: hidden;
+            max-width: 500px; /* Ancho ajustado para el formulario de login */
+            width: 100%; /* Asegura que ocupe el ancho disponible */
+            padding: 30px; /* Padding interno */
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Animación de carga */
+        }
+
+            /* Barra superior animada para el contenedor de login */
+            .login-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #2E8B57, #4682B4, #20B2AA, #228B22);
+                background-size: 400% 400%;
+                animation: gradient 3s ease infinite;
+            }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .login-header .main-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #2E8B57 0%, #4682B4 100%); /* Gradiente para el icono */
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                animation: bounce 2s infinite;
+                color: white;
+                margin-bottom: 20px;
+                box-shadow: 0 5px 15px rgba(46, 139, 87, 0.2);
+            }
+
+            .login-header h2 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2c5f2d; /* Verde oscuro para el título */
+                margin-bottom: 10px;
+            }
+
+            .login-header p {
+                color: #666; /* Gris medio para la descripción */
+                font-size: 1rem;
+            }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c5f2d;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: block; /* Para que la etiqueta esté encima del input */
+        }
+
+        .input-group { /* Para integrar iconos en los inputs */
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px; /* Espacio entre grupos de input */
+        }
+
+        .input-group-text {
+            background: rgba(46, 139, 87, 0.1); /* Fondo sutil para el icono */
+            border: 2px solid #e1f5e1;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            padding: 12px 15px;
+            color: #2E8B57; /* Color del icono */
+        }
+
+        .form-control {
+            border: 2px solid #e1f5e1;
+            border-left: none; /* Eliminar borde izquierdo si hay input-group-text */
+            border-radius: 0 12px 12px 0; /* Solo redondear el lado derecho */
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            flex-grow: 1; /* Ocupa el espacio restante */
+        }
+        /* Resetear si no hay input-group-text */
+        .form-group > .form-control {
+            border-left: 2px solid #e1f5e1;
+            border-radius: 12px;
+        }
+
+        .form-control:focus {
+            border-color: #2E8B57;
+            box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25);
+            background: white;
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .form-control:hover {
+            border-color: rgba(46, 139, 87, 0.5);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            font-weight: 500;
+            display: block;
+        }
+
+            .text-danger::before {
+                content: '\f071';
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                font-size: 0.8rem;
+                margin-right: 5px;
+            }
+
+        .validation-summary.text-danger {
+            background: rgba(220, 53, 69, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(220, 53, 69, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            text-align: left; /* Alineación del texto */
+        }
+
+            .validation-summary.text-danger strong {
+                color: #dc3545;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .validation-summary.text-danger ul {
+                margin: 0;
+                padding-left: 20px;
+            }
+
+            .validation-summary.text-danger li {
+                color: #dc3545;
+                font-weight: 500;
+                margin: 5px 0;
+            }
+
+            .validation-summary.text-danger::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: #dc3545;
+            }
+
+
+        .btn-submit { /* Botón principal de login */
+            background: linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            color: white; /* Texto blanco en el botón */
+            cursor: pointer;
+            width: 100%; /* Ocupa todo el ancho disponible */
+            margin-top: 20px;
+        }
+
+            .btn-submit::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            .btn-submit:hover::before {
+                left: 100%;
+            }
+
+            .btn-submit:hover {
+                background: linear-gradient(135deg, #228B22 0%, #4682B4 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(46, 139, 87, 0.4);
+                color: white;
+            }
+
+            .btn-submit:focus {
+                box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25);
+                outline: none;
+            }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .login-container {
+                margin: 0 15px; /* Ajuste de margen para móviles */
+                padding: 25px;
+            }
+
+            .login-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .login-header p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .login-header .main-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .login-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-control {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .btn-submit {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animaciones de carga */
+        @@keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="main-icon">
+                <i class="fas fa-lock"></i> <!-- Icono de candado para login -->
+            </div>
+            <h2>Iniciar Sesión</h2>
+            <p>Accede a tu cuenta para gestionar tus reservas</p>
+        </div>
+
+        @if (ViewData["Mensaje"] != null)
+        {
+            <div class="alert alert-danger validation-summary text-danger fade show" role="alert">
+                <strong><i class="fas fa-exclamation-triangle"></i> Error de Acceso:</strong>
+                <p>@ViewData["Mensaje"]</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <form asp-controller="Acceso" asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary text-danger">
+                <strong><i class="fas fa-exclamation-triangle"></i>Por favor corrige los siguientes errores:</strong>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Correo" class="form-label">Correo electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input asp-for="Correo" class="form-control" placeholder="Ingresa tu correo" />
+                </div>
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Contrasena" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input asp-for="Contrasena" type="password" class="form-control" placeholder="Ingresa tu contraseña" />
+                </div>
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-sign-in-alt me-2"></i> Ingresar
+            </button>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
