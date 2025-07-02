@@ -226,6 +226,18 @@ namespace Proyecto_Final_Web.Controllers
             {
                 try
                 {
+                    // Hashear la contraseña con SHA256 antes de actualizar
+                    using (SHA256 sha256Hash = SHA256.Create())
+                    {
+                        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(usuario.Contrasena));
+                        StringBuilder builder = new StringBuilder();
+                        for (int i = 0; i < bytes.Length; i++)
+                        {
+                            builder.Append(bytes[i].ToString("x2"));
+                        }
+                        usuario.Contrasena = builder.ToString();
+                    }
+
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
                 }
