@@ -80,7 +80,8 @@ namespace Proyecto_Final_Web.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
             var userRole = int.Parse(User.FindFirst("IdRol")?.Value ?? "0");
 
-            ViewData["IdCancha"] = new SelectList(_context.Canchas, "IdCancha", "Nombre");
+            ViewData["IdCancha"] = new SelectList(_context.Canchas
+                .Where(c => c.Activa), "IdCancha", "Nombre");
             
             // Solo empleados y superiores pueden seleccionar clientes
             if (userRole >= 3) // Empleado o superior
